@@ -9,7 +9,7 @@ limite_valor_saques = 500
     
 def mostar_extrato(Movimentacoes):
     if movimentacoes:
-        print("Extrato da conta:")
+        print("*Extrato da conta:*")
         for transacao in movimentacoes:
             print(transacao)
         
@@ -18,23 +18,24 @@ def mostar_extrato(Movimentacoes):
 
 def mostrar_saldo(Saldo):
     print(f"Seu saldo atual é: R${saldo:.2f}")
-    
+       
 def menu_inicial():
      saldo = 0
      saques_diarios = 0
      data_ultimo_saque = datetime.date.today() 
-
-     print("Bem-vindo ao Banco Python!")
-     
+     limites_saques_diarios = 3
+     limite_valor_saques = 500
+     movimentacoes = []
+    
 while True:
-
-    opcao = input("\nSelecione a operação desejada:\n1 - Extrato\n2 - Depósito\n3 - Saque\n4 - Sair\n")
+     
+    opcao = input("\n______Bem-vindo ao Banco Python!______\n______CAIXA_ELETRONICO_24H________\n*Selecione a operação desejada:*\n[1] - Extrato\n[2] - Depósito\n[3] - Saque\n[4] - Sair\n")
     
     if opcao == "1":
         mostar_extrato(movimentacoes)
         mostrar_saldo(saldo)     
     elif opcao == "2":
-        valor_deposito= input("Informe o valor do depósito: R$")
+        valor_deposito= input(" O valor do depósito: R$")
         try:
             valor_deposito = float(valor_deposito)  
             if (valor_deposito > 0):
@@ -53,20 +54,21 @@ while True:
             data_ultimo_saque = today
 
         if saques_diarios >= limites_saques_diarios:
+            now = datetime.datetime.now()
             print("Operação falhou! Limite de saques diários excedido.")
             continue
     
-        valor_saque = input("Informe o valor do saque: R$ ")
+        valor_saque = input("O valor do saque: R$ ")
         try:
             valor_saque = float(valor_saque)
             if valor_saque > limite_valor_saques:
-                print(f"O limite por saque é de R$ {limite_valor_saques:.2f}"  'tente novamente.')
+                now = datetime.datetime.now()
+                print(f"O limite por saque é de R$ {limite_valor_saques:.2f}" 'tente novamente.')
             elif valor_saque > saldo: 
                 print (f"Operação falhou! Saldo insuficiente. seu saldo atual é de R$ {saldo:.2f}")
             else:
                 saldo -= valor_saque
                 saques_diarios += 1
-                now = datetime.datetime.now()
                 movimentacoes.append(f"Saque de R$ {valor_saque:.2f} realizado em {today.strftime('%d/%m/%Y %H:%M:%S')}")
                 print(f"Operação realizada com sucesso! Seu saldo atual é de R$ {saldo:.2f}")
         except ValueError:
